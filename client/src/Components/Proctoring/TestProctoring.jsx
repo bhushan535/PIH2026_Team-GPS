@@ -10,9 +10,9 @@ export default function TestProctoring() {
   const handleFaceStatus = ({ count }) => {
     setCount(count);
 
-    if (count === 0) setStatus("No Face ❌");
-    else if (count > 1) setStatus("Multiple Faces 🚫");
-    else setStatus("Normal ✅");
+    if (count === 0) setStatus("No Face ");
+    else if (count > 1) setStatus("Multiple Faces ");
+    else setStatus("Normal ");
   };
 
   return (
