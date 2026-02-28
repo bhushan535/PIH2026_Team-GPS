@@ -1,0 +1,92 @@
+.create-exam-page {
+  min-height: 100vh;
+  padding: 40px 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: radial-gradient(circle at top left, #0f172a, #0b1a2b, #07121f);
+}
+
+.exam-card {
+  width: 100%;
+  max-width: 800px;
+  padding: 40px;
+  border-radius: 20px;
+  background: rgba(20, 35, 55, 0.85);
+  backdrop-filter: blur(14px);
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6);
+  color: white;
+}
+
+.exam-card h2 {
+  text-align: center;
+  margin-bottom: 30px;
+  font-weight: 600;
+  font-size: 28px;
+}
+
+.create-exam-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px 25px;
+}
+
+/* Full width fields */
+.create-exam-form select,
+.create-exam-form input,
+.create-exam-form button,
+.create-exam-form label:nth-child(1),
+.create-exam-form label:nth-child(5),
+.create-exam-form label:nth-child(9) {
+  grid-column: span 2;
+}
+
+.create-exam-form label {
+  font-size: 13px;
+  opacity: 0.8;
+  margin-bottom: -10px;
+}
+
+.create-exam-form input,
+.create-exam-form select {
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: #1b2a3a;
+  color: white;
+  outline: none;
+  transition: 0.3s;
+}
+
+.create-exam-form input:focus,
+.create-exam-form select:focus {
+  border-color: #4f9cff;
+  box-shadow: 0 0 8px rgba(79, 156, 255, 0.6);
+}
+
+.create-exam-form input[readonly] {
+  background: #13202e;
+  opacity: 0.7;
+}
+
+.create-exam-form button {
+  margin-top: 20px;
+  padding: 14px;
+  border-radius: 12px;
+  border: none;
+  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.create-exam-form button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+}
+
+.create-exam-form button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

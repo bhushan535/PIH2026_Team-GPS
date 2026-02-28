@@ -59,13 +59,13 @@ function TeacherHome() {
             <p>View and manage exams</p>
           </div>
 
-          <div className="card" onClick={() => navigate("/create-class")}>
+          <div className="card" onClick={() => navigate("/CreateClass")}>
             <FaPlusCircle className="card-icon" />
             <h3>Create Class</h3>
             <p>Create a new class</p>
           </div>
 
-          <div className="card" onClick={() => navigate("/create-exam")}>
+          <div className="card" onClick={() => navigate("/CreateExam")}>
             <FaPenFancy className="card-icon" />
             <h3>Create Exam</h3>
             <p>Create a new exam</p>

@@ -1,0 +1,74 @@
+.create-class-container {
+  min-height: 100vh;
+  padding: 40px 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: radial-gradient(circle at top left, #0f172a, #0b1a2b, #07121f);
+}
+
+.class-card {
+  width: 100%;
+  max-width: 600px;
+  padding: 40px;
+  border-radius: 20px;
+  background: rgba(20, 35, 55, 0.85);
+  backdrop-filter: blur(14px);
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6);
+  color: white;
+}
+
+.class-card h2 {
+  text-align: center;
+  margin-bottom: 30px;
+  font-weight: 600;
+  font-size: 26px;
+}
+
+.class-card form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.class-card label {
+  font-size: 13px;
+  opacity: 0.8;
+}
+
+.class-card input {
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: #1b2a3a;
+  color: white;
+  outline: none;
+  transition: 0.3s;
+}
+
+.class-card input:focus {
+  border-color: #4f9cff;
+  box-shadow: 0 0 8px rgba(79, 156, 255, 0.6);
+}
+
+.class-card button {
+  margin-top: 10px;
+  padding: 14px;
+  border-radius: 12px;
+  border: none;
+  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.class-card button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+}
+
+.class-card button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
