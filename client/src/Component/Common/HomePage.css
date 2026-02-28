@@ -1,0 +1,107 @@
+.home-container {
+  width: 100vw;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: "Segoe UI", sans-serif;
+  color: white;
+}
+
+.hero-section {
+  width: 100%;
+  max-width: 1400px;
+  padding: 0 60px;
+  text-align: center;
+}
+
+/* Title */
+.main-title {
+  font-size: 64px;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+/* Subtitle */
+.subtitle {
+  font-size: 22px;
+  margin-bottom: 60px;
+  opacity: 0.9;
+}
+
+/* Buttons */
+.button-group {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  margin-bottom: 80px;
+}
+
+.btn {
+  padding: 18px 55px;
+  border-radius: 12px;
+  text-decoration: none;
+  font-size: 20px;
+  font-weight: 600;
+  transition: 0.3s ease;
+}
+
+.primary-btn {
+  background: #00f5d4;
+  color: #0f2027;
+}
+
+.primary-btn:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 15px 35px rgba(0, 245, 212, 0.5);
+}
+
+.outline-btn {
+  border: 2px solid white;
+  color: white;
+}
+
+.outline-btn:hover {
+  background: white;
+  color: #0f2027;
+  transform: translateY(-6px);
+}
+
+/* Features */
+.features {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+}
+
+.feature-card {
+  flex: 1;
+  max-width: 350px;
+  background: rgba(255, 255, 255, 0.12);
+  padding: 40px;
+  border-radius: 20px;
+  backdrop-filter: blur(12px);
+  transition: 0.3s ease;
+}
+
+.feature-card:hover {
+  transform: translateY(-8px);
+  background: rgba(255, 255, 255, 0.18);
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .main-title {
+    font-size: 42px;
+  }
+
+  .subtitle {
+    font-size: 18px;
+  }
+
+  .features {
+    flex-direction: column;
+    align-items: center;
+  }
+}
