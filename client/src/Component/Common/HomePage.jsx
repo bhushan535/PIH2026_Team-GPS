@@ -17,13 +17,17 @@ function HomePage() {
         </p>
 
         <div className="button-group">
+
+          {/* Student Login Navigation */}
           <Link to="/StudentLogin" className="btn primary-btn">
             Student Login
           </Link>
 
+          {/* Teacher Login Navigation */}
           <Link to="/TeacherLogin" className="btn outline-btn">
             Teacher Login
           </Link>
+
         </div>
 
         <div className="features">

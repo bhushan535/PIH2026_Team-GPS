@@ -1,0 +1,119 @@
+/* 🔥 Ensure Full Screen Layout */
+html, body, #root {
+  height: 100%;
+  margin: 0;
+}
+
+/* 🔥 Full Screen Dashboard */
+.dashboard-container {
+  width: 100vw;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #141e30, #243b55);
+  padding: 60px 80px;
+  font-family: "Poppins", sans-serif;
+  color: white;
+  box-sizing: border-box;
+}
+
+/* Header */
+.dashboard-header {
+  margin-bottom: 50px;
+}
+
+.dashboard-header h2 {
+  font-size: 32px;
+  margin-bottom: 8px;
+}
+
+.dashboard-header p {
+  opacity: 0.85;
+  font-size: 15px;
+}
+
+/* 🔥 Grid Full Width */
+.exam-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 30px;
+  width: 100%;
+}
+
+/* Exam Card */
+.exam-card {
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(10px);
+  padding: 28px;
+  border-radius: 18px;
+  box-shadow: 0 20px 45px rgba(0,0,0,0.35);
+  transition: all 0.3s ease;
+}
+
+.exam-card:hover {
+  transform: translateY(-6px);
+}
+
+/* Title */
+.exam-card h3 {
+  margin-bottom: 18px;
+  font-size: 18px;
+}
+
+/* Details */
+.exam-details p {
+  font-size: 14px;
+  margin: 6px 0;
+}
+
+/* Status */
+.status {
+  margin: 18px 0;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  display: inline-block;
+}
+
+.status.available {
+  background: #22c55e;
+}
+
+.status.completed {
+  background: #3b82f6;
+}
+
+/* Button */
+.start-btn {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  background: white;
+  color: #243b55;
+  transition: all 0.3s ease;
+}
+
+.start-btn:hover {
+  background: #e2e8f0;
+  transform: translateY(-2px);
+}
+
+/* Info Text */
+.info-text {
+  margin-bottom: 20px;
+  opacity: 0.85;
+}
+
+.error-text {
+  margin-bottom: 20px;
+  color: #ff6b6b;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .dashboard-container {
+    padding: 40px 20px;
+  }
+}
