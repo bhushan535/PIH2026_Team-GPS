@@ -9,12 +9,9 @@ import TeacherOptions from "./Component/Teacher-ui/TeacherOption.jsx";
 import TeacherRegister from "./Component/Teacher-ui/TeacherRegister.jsx";
 import TeacherLogin from "./Component/Teacher-ui/TeacherLogin.jsx";
 import TeacherHome from "./Component/Teacher-ui/TeacherHome.jsx";
-import Exams from "./Component/Teacher-ui/Exams.jsx";
-import CreateExam from "./Component/Teacher-ui/CreateExam.jsx";
-import AddQuestion from "./Component/Teacher-ui/AddQuestion.jsx";
-import EditExam from "./Component/Teacher-ui/EditExam.jsx";
-import TeacherLayout from "./Component/Teacher-ui/TeacherLayout.jsx";
-import ExamResults from "./Component/Teacher-ui/ExamResults.jsx";
+import ExamPage from "./Component/Student-UI/ExamPage.jsx";
+import ExamInstructions from "./Component/Student-UI/ExamInstructions.jsx";
+import ExamStartCountdown from "./Component/Student-UI/ExamStartCountdown.jsx";
 
 function App() {
   return (
@@ -26,16 +23,11 @@ function App() {
       {/* Student */}
       <Route path="/StudentLogin" element={<StudentLogin />} />
       <Route path="/student-dashboard" element={<StudentDashboard />} />
-
-      {/* Teacher Layout */}
-      <Route element={<TeacherLayout />}>
-        <Route path="/teacher-home" element={<TeacherHome />} />
-        <Route path="/exams" element={<Exams />} />
-        <Route path="/create-exam" element={<CreateExam />} />
-        <Route path="/add-question/:examId" element={<AddQuestion />} />
-        <Route path="/edit-exam/:id" element={<EditExam />} />
-        <Route path="/results/:examId" element={<ExamResults />} />
-      </Route>
+      <Route path="/exam/:id/instructions" element={<ExamInstructions />} />
+      <Route path="/exam/:examId/start" element={<ExamStartCountdown />} />
+      <Route path="/attempt-exam/:id" element={<ExamPage />} />
+      {/* Teacher */}
+     <Route path="/teacher" element={<TeacherOptions />} />
 
       {/* Teacher Auth Pages */}
       <Route path="/teacher" element={<TeacherOptions />} />
