@@ -29,7 +29,7 @@ function App() {
 
       {/* Teacher Layout */}
       <Route element={<TeacherLayout />}>
-        <Route path="/TeacherHome" element={<TeacherHome />} />
+        <Route path="/teacher-home" element={<TeacherHome />} />
         <Route path="/exams" element={<Exams />} />
         <Route path="/create-exam" element={<CreateExam />} />
         <Route path="/add-question/:examId" element={<AddQuestion />} />
