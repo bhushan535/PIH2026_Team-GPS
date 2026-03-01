@@ -8,7 +8,7 @@ function AddQuestion() {
   const navigate = useNavigate();
 
   const [questions, setQuestions] = useState([]);
-  const [authorized, setAuthorized] = useState(false);
+  const [exam, setExam] = useState(null);
 
   const [questionText, setQuestionText] = useState("");
   const [optionA, setOptionA] = useState("");
@@ -18,29 +18,17 @@ function AddQuestion() {
   const [correctOption, setCorrectOption] = useState("");
   const [marks, setMarks] = useState("");
 
-  const [isEditing, setIsEditing] = useState(false);
-  const [editId, setEditId] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  /* ================= CHECK EXAM OWNERSHIP ================= */
-  const verifyOwnership = async () => {
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-
+  /* ================= FETCH EXAM ================= */
+  const fetchExam = async () => {
     const { data, error } = await supabase
       .from("exams")
-      .select("teacher_id")
+      .select("*")
       .eq("id", examId)
       .single();
 
-    if (error || !data || data.teacher_id !== user.id) {
-      alert("Unauthorized access");
-      navigate("/exams");
-      return;
-    }
-
-    setAuthorized(true);
+    if (!error) setExam(data);
   };
 
   /* ================= FETCH QUESTIONS ================= */
@@ -48,85 +36,50 @@ function AddQuestion() {
     const { data, error } = await supabase
       .from("questions")
       .select("*")
-      .eq("exam_id", examId)
-      .order("created_at", { ascending: false });
+      .eq("exam_id", examId);
 
     if (!error) setQuestions(data || []);
     setLoading(false);
   };
 
   useEffect(() => {
-    verifyOwnership();
+    fetchExam();
     fetchQuestions();
   }, [examId]);
 
-  /* ================= ADD / UPDATE ================= */
+  /* ================= ADD QUESTION ================= */
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!correctOption) {
-      alert("Select correct option");
+    if (!exam) return;
+
+    if (questions.length >= exam.total_questions) {
+      alert("Question limit reached 🚫");
       return;
     }
 
-    const payload = {
-      exam_id: examId,
-      question_text: questionText,
-      option_a: optionA,
-      option_b: optionB,
-      option_c: optionC,
-      option_d: optionD,
-      correct_option: correctOption,
-      marks: Number(marks),
-    };
+    const { error } = await supabase.from("questions").insert([
+      {
+        exam_id: examId,
+        question_text: questionText,
+        option_a: optionA,
+        option_b: optionB,
+        option_c: optionC,
+        option_d: optionD,
+        correct_option: correctOption,
+        marks: Number(marks),
+      },
+    ]);
 
-    let response;
-
-    if (isEditing) {
-      response = await supabase
-        .from("questions")
-        .update(payload)
-        .eq("id", editId);
-    } else {
-      response = await supabase
-        .from("questions")
-        .insert([payload]);
-    }
-
-    if (response.error) {
-      alert(response.error.message);
+    if (error) {
+      alert(error.message);
       return;
     }
 
-    alert(isEditing ? "Question Updated" : "Question Added");
     resetForm();
     fetchQuestions();
   };
 
-  /* ================= DELETE ================= */
-  const deleteQuestion = async (id) => {
-    const confirmDelete = window.confirm("Delete this question?");
-    if (!confirmDelete) return;
-
-    await supabase.from("questions").delete().eq("id", id);
-    fetchQuestions();
-  };
-
-  /* ================= EDIT ================= */
-  const handleEdit = (q) => {
-    setQuestionText(q.question_text);
-    setOptionA(q.option_a);
-    setOptionB(q.option_b);
-    setOptionC(q.option_c);
-    setOptionD(q.option_d);
-    setCorrectOption(q.correct_option);
-    setMarks(q.marks);
-    setEditId(q.id);
-    setIsEditing(true);
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
-
-  /* ================= RESET ================= */
   const resetForm = () => {
     setQuestionText("");
     setOptionA("");
@@ -135,95 +88,110 @@ function AddQuestion() {
     setOptionD("");
     setCorrectOption("");
     setMarks("");
-    setIsEditing(false);
-    setEditId(null);
   };
 
-  if (loading || !authorized) {
-    return (
-      <div className="add-question-page">
-        <h2 style={{ color: "white" }}>Loading...</h2>
-      </div>
-    );
-  }
+  if (loading) return <h2>Loading...</h2>;
+
+  const isLimitReached =
+    exam && questions.length >= exam.total_questions;
 
   return (
     <div className="add-question-page">
       <div className="add-question-card">
         <h2>Add Questions</h2>
 
-        <form onSubmit={handleSubmit} className="question-form">
-          <input
-            placeholder="Question"
-            value={questionText}
-            onChange={(e) => setQuestionText(e.target.value)}
-            required
-          />
+        <p>
+          Added: {questions.length} / {exam?.total_questions}
+        </p>
 
-          <input placeholder="Option A" value={optionA}
-            onChange={(e) => setOptionA(e.target.value)} required />
-          <input placeholder="Option B" value={optionB}
-            onChange={(e) => setOptionB(e.target.value)} required />
-          <input placeholder="Option C" value={optionC}
-            onChange={(e) => setOptionC(e.target.value)} required />
-          <input placeholder="Option D" value={optionD}
-            onChange={(e) => setOptionD(e.target.value)} required />
+        {/* FORM (only if limit not reached) */}
+        {!isLimitReached && (
+          <form onSubmit={handleSubmit} className="question-form">
 
-          <select value={correctOption}
-            onChange={(e) => setCorrectOption(e.target.value)} required>
-            <option value="">Select Correct Option</option>
-            <option value="A">Option A</option>
-            <option value="B">Option B</option>
-            <option value="C">Option C</option>
-            <option value="D">Option D</option>
-          </select>
+            <input
+              placeholder="Question"
+              value={questionText}
+              onChange={(e) => setQuestionText(e.target.value)}
+              required
+            />
 
-          <input type="number" placeholder="Marks"
-            value={marks}
-            onChange={(e) => setMarks(e.target.value)} required />
+            <input
+              placeholder="Option A"
+              value={optionA}
+              onChange={(e) => setOptionA(e.target.value)}
+              required
+            />
 
-          <div className="btn-row">
-            <button type="submit" className="add-btn">
-              {isEditing ? "Update Question" : "Add Question"}
+            <input
+              placeholder="Option B"
+              value={optionB}
+              onChange={(e) => setOptionB(e.target.value)}
+              required
+            />
+
+            <input
+              placeholder="Option C"
+              value={optionC}
+              onChange={(e) => setOptionC(e.target.value)}
+              required
+            />
+
+            <input
+              placeholder="Option D"
+              value={optionD}
+              onChange={(e) => setOptionD(e.target.value)}
+              required
+            />
+
+            <select
+              value={correctOption}
+              onChange={(e) => setCorrectOption(e.target.value)}
+              required
+            >
+              <option value="">Select Correct Option</option>
+              <option value="A">A</option>
+              <option value="B">B</option>
+              <option value="C">C</option>
+              <option value="D">D</option>
+            </select>
+
+            <input
+              type="number"
+              placeholder="Marks"
+              value={marks}
+              onChange={(e) => setMarks(e.target.value)}
+              required
+            />
+
+            <button type="submit">Add Question</button>
+
+          </form>
+        )}
+
+        {/* DONE BUTTON */}
+        {isLimitReached && (
+          <div style={{ marginTop: "20px" }}>
+            <h3 style={{ color: "#4caf50" }}>
+              All Questions Added ✅
+            </h3>
+
+            <button
+              className="done-btn"
+              onClick={() => navigate("/exams")}
+            >
+              Done
             </button>
-
-            {isEditing && (
-              <button type="button"
-                className="cancel-btn"
-                onClick={resetForm}>
-                Cancel
-              </button>
-            )}
           </div>
-        </form>
+        )}
 
-        <h3 className="list-title">Added Questions</h3>
+        <h3 style={{ marginTop: "25px" }}>Added Questions</h3>
 
         {questions.map((q, index) => (
-          <div className="question-item" key={q.id}>
+          <div key={q.id}>
             <p><b>Q{index + 1}:</b> {q.question_text}</p>
-            <ul>
-              <li>A. {q.option_a}</li>
-              <li>B. {q.option_b}</li>
-              <li>C. {q.option_c}</li>
-              <li>D. {q.option_d}</li>
-            </ul>
-            <p className="correct">
-              ✔ Correct: {q.correct_option} | Marks: {q.marks}
-            </p>
-
-            <div className="btn-row">
-              <button className="edit-btn"
-                onClick={() => handleEdit(q)}>
-                Edit
-              </button>
-              <button className="delete-btn"
-                onClick={() => deleteQuestion(q.id)}>
-                Delete
-              </button>
-            </div>
           </div>
         ))}
+
       </div>
     </div>
   );

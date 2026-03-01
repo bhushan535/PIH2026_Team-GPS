@@ -1,77 +1,69 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "../../lib/supabase";
 import "./CreateExam.css";
 
 function CreateExam() {
   const navigate = useNavigate();
-  const today = new Date().toISOString().split("T")[0];
 
+  const [subjectName, setSubjectName] = useState("");
   const [title, setTitle] = useState("");
-  const [subjectId, setSubjectId] = useState("");
-  const [subjects, setSubjects] = useState([]);
   const [scheduledAt, setScheduledAt] = useState("");
   const [durationMin, setDurationMin] = useState("");
   const [totalMarks, setTotalMarks] = useState("");
   const [loading, setLoading] = useState(false);
 
-  /* ================= FETCH SUBJECTS (Teacher Only) ================= */
-  useEffect(() => {
-    const loadSubjects = async () => {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-
-      const { data, error } = await supabase
-        .from("subjects")
-        .select("*")
-        .eq("teacher_id", user.id);
-
-      if (!error) setSubjects(data);
-    };
-
-    loadSubjects();
-  }, []);
-
-  /* ================= SUBMIT ================= */
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    if (!title || !subjectId || !scheduledAt || !durationMin || !totalMarks) {
-      return alert("All fields required");
-    }
+    setLoading(true);
 
     try {
-      setLoading(true);
+      /* 1️⃣ Create Subject */
+      const { data: subjectData, error: subjectError } = await supabase
+        .from("subjects")
+        .insert([
+          {
+            subject_name: subjectName,
+            teacher_id: null, // temporary
+          },
+        ])
+        .select()
+        .single();
 
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-
-      const { error } = await supabase.from("exams").insert([
-        {
-          title,
-          subject_id: subjectId,
-          teacher_id: user.id,
-          scheduled_at: scheduledAt,
-          duration_min: Number(durationMin),
-          total_marks: Number(totalMarks),
-        },
-      ]);
-
-      if (error) {
-        alert(error.message);
+      if (subjectError) {
+        alert(subjectError.message);
+        setLoading(false);
         return;
       }
 
-      alert("Exam created successfully");
+      /* 2️⃣ Create Exam */
+      const { error: examError } = await supabase
+        .from("exams")
+        .insert([
+          {
+            subject_id: subjectData.id,
+            teacher_id: null, // temporary
+            title,
+            scheduled_at: scheduledAt,
+            duration_min: Number(durationMin),
+            total_marks: Number(totalMarks),
+          },
+        ]);
+
+      if (examError) {
+        alert(examError.message);
+        setLoading(false);
+        return;
+      }
+
+      alert("Exam Created Successfully 🎉");
       navigate("/exams");
 
     } catch (err) {
-      alert("Server error");
-    } finally {
-      setLoading(false);
+      alert("Something went wrong");
     }
+
+    setLoading(false);
   };
 
   return (
@@ -79,21 +71,14 @@ function CreateExam() {
       <div className="exam-card">
         <h2>Create Exam</h2>
 
-        <form className="create-exam-form" onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className="create-exam-form">
 
-          <label>Select Subject</label>
-          <select
-            value={subjectId}
-            onChange={(e) => setSubjectId(e.target.value)}
+          <label>Subject Name</label>
+          <input
+            value={subjectName}
+            onChange={(e) => setSubjectName(e.target.value)}
             required
-          >
-            <option value="">Select Subject</option>
-            {subjects.map((s) => (
-              <option key={s.id} value={s.id}>
-                {s.subject_name} ({s.subject_code})
-              </option>
-            ))}
-          </select>
+          />
 
           <label>Exam Title</label>
           <input
@@ -105,7 +90,6 @@ function CreateExam() {
           <label>Scheduled Date & Time</label>
           <input
             type="datetime-local"
-            min={today}
             value={scheduledAt}
             onChange={(e) => setScheduledAt(e.target.value)}
             required

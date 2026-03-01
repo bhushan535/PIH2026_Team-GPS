@@ -14,6 +14,7 @@ import CreateExam from "./Component/Teacher-ui/CreateExam.jsx";
 import AddQuestion from "./Component/Teacher-ui/AddQuestion.jsx";
 import EditExam from "./Component/Teacher-ui/EditExam.jsx";
 import TeacherLayout from "./Component/Teacher-ui/TeacherLayout.jsx";
+import ExamResults from "./Component/Teacher-ui/ExamResults.jsx";
 
 function App() {
   return (
@@ -21,8 +22,8 @@ function App() {
       {/* Public Routes */}
       <Route path="/" element={<HomePage />} />
       <Route path="/auth-callback" element={<AuthCallback />} />
-
       {/* Student Routes */}
+      {/* Student */}
       <Route path="/StudentLogin" element={<StudentLogin />} />
       <Route path="/student-dashboard" element={<StudentDashboard />} />
 
@@ -33,13 +34,16 @@ function App() {
         <Route path="/create-exam" element={<CreateExam />} />
         <Route path="/add-question/:examId" element={<AddQuestion />} />
         <Route path="/edit-exam/:id" element={<EditExam />} />
+        <Route path="/results/:examId" element={<ExamResults />} />
       </Route>
 
       {/* Teacher Auth Pages */}
       <Route path="/teacher" element={<TeacherOptions />} />
       <Route path="/TeacherRegister" element={<TeacherRegister />} />
       <Route path="/TeacherLogin" element={<TeacherLogin />} />
+
     </Routes>
+ 
   );
 }
 
