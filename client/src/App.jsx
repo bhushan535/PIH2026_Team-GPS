@@ -1,30 +1,45 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 
-import TeacherHome from "./Component/teacherui/TeacherHome";
-import Classes from "./Component/teacherui/Classes";
-import CreateClass from "./Component/teacherui/CreateClass";
-import CreateExam from "./Component/teacherui/CreateExam";
-import Exams from "./Component/teacherui/Exams";
-import EditExam from "./Component/teacherui/EditExam";
-import AddQuestion from "./Component/teacherui/AddQuestion"; 
-import EditClass from "./Component/teacherui/EditClass";
+import HomePage from "./Component/HomePage.jsx";
+import AuthCallback from "./Component/Common/AuthCallback.jsx";
+import StudentLogin from "./Component/Student-UI/StudentLogin.jsx";
+import StudentDashboard from "./Component/Student-UI/StudentDashboard.jsx";
+
+import TeacherOptions from "./Component/Teacher-ui/TeacherOption.jsx";
+import TeacherRegister from "./Component/Teacher-ui/TeacherRegister.jsx";
+import TeacherLogin from "./Component/Teacher-ui/TeacherLogin.jsx";
+import TeacherHome from "./Component/Teacher-ui/TeacherHome.jsx";
+import Exams from "./Component/Teacher-ui/Exams.jsx";
+import CreateExam from "./Component/Teacher-ui/CreateExam.jsx";
+import AddQuestion from "./Component/Teacher-ui/AddQuestion.jsx";
+import EditExam from "./Component/Teacher-ui/EditExam.jsx";
+import TeacherLayout from "./Component/Teacher-ui/TeacherLayout.jsx";
 
 function App() {
   return (
-    <>
-      <Routes>
-        <Route path="/TeacherHome" element={<TeacherHome />} />
-        <Route path="/Classes" element={<Classes />} />
-        <Route path="/CreateClass" element={<CreateClass />} />
-        <Route path="/edit-class/:id" element={<EditClass />} />
-        <Route path="/CreateExam" element={<CreateExam />} />
-        <Route path="/Exams" element={<Exams />} />
-        <Route path="/edit-exam/:id" element={<EditExam />} />
-        <Route path="/add-question/:examId" element={<AddQuestion />} />
-        <Route path="/edit-class/:id" element={<EditClass />} />
-      </Routes>
-      </>
+    <Routes>
+      {/* Public Routes */}
+      <Route path="/" element={<HomePage />} />
+      <Route path="/auth-callback" element={<AuthCallback />} />
 
+      {/* Student Routes */}
+      <Route path="/StudentLogin" element={<StudentLogin />} />
+      <Route path="/student-dashboard" element={<StudentDashboard />} />
+
+      {/* Teacher Layout */}
+      <Route element={<TeacherLayout />}>
+        <Route path="/TeacherHome" element={<TeacherHome />} />
+        <Route path="/exams" element={<Exams />} />
+        <Route path="/create-exam" element={<CreateExam />} />
+        <Route path="/add-question/:examId" element={<AddQuestion />} />
+        <Route path="/edit-exam/:id" element={<EditExam />} />
+      </Route>
+
+      {/* Teacher Auth Pages */}
+      <Route path="/teacher" element={<TeacherOptions />} />
+      <Route path="/TeacherRegister" element={<TeacherRegister />} />
+      <Route path="/TeacherLogin" element={<TeacherLogin />} />
+    </Routes>
   );
 }
 
