@@ -1,55 +1,44 @@
-import React, { useEffect, useState } from "react";
-import { getSubjects, addSubject } from "../../api/subjectApi";
-import { logoutTeacher } from "../../auth/teacherAuth";
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import "./TeacherHome.css";
 
 function TeacherHome() {
-  const [subjects, setSubjects] = useState([]);
-  const [name, setName] = useState("");
-  const [code, setCode] = useState("");
-
-  useEffect(() => {
-    loadSubjects();
-  }, []);
-
-  async function loadSubjects() {
-    const res = await getSubjects();
-    if (res.data) setSubjects(res.data);
-  }
-
-  async function handleAdd() {
-    if (!name || !code) return alert("fill all fields");
-
-    await addSubject(name, code);
-    setName("");
-    setCode("");
-    loadSubjects();
-  }
+  const navigate = useNavigate();
 
   return (
-    <div style={{ padding: 40 }}>
-      <h2>Teacher Dashboard</h2>
+    <div className="teacher-home-container">
+      <div className="teacher-card">
+        <h2>Teacher Dashboard</h2>
+        <p>Select what you want to manage</p>
 
-      <button onClick={logoutTeacher}>Logout</button>
+        <div className="option-grid">
 
-      <h3>Add Subject</h3>
-      <input
-        placeholder="Subject Name"
-        value={name}
-        onChange={e => setName(e.target.value)}
-      />
-      <input
-        placeholder="Subject Code"
-        value={code}
-        onChange={e => setCode(e.target.value)}
-      />
-      <button onClick={handleAdd}>Add</button>
+          <div
+            className="option-card"
+            onClick={() => navigate("/create-exam")}
+          >
+            <h3>Create Exam</h3>
+            <p>Create a new examination</p>
+          </div>
 
-      <h3>Your Subjects</h3>
-      {subjects.map(s => (
-        <div key={s.id}>
-          {s.subject_name} ({s.subject_code})
+          <div
+            className="option-card"
+            onClick={() => navigate("/exams")}
+          >
+            <h3>Manage Exams</h3>
+            <p>Edit, publish or delete exams</p>
+          </div>
+
+          <div
+            className="option-card"
+            onClick={() => navigate("/results")}
+          >
+            <h3>View Results</h3>
+            <p>See student performance</p>
+          </div>
+
         </div>
-      ))}
+      </div>
     </div>
   );
 }
