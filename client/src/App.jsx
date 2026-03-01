@@ -15,6 +15,7 @@ function App() {
       {/* Home */}
       <Route path="/" element={<HomePage />} />
       <Route path="/auth-callback" element={<AuthCallback />} />
+
       {/* Student */}
       <Route path="/StudentLogin" element={<StudentLogin />} />
       <Route path="/student-dashboard" element={<StudentDashboard />} />
@@ -26,6 +27,7 @@ function App() {
       <Route path="/TeacherLogin" element={<TeacherLogin />} />
       <Route path="/TeacherHome" element={<TeacherHome />} />
     </Routes>
+ 
   );
 }
 
