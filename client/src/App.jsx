@@ -1,29 +1,30 @@
-import { Routes, Route, useLocation } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import TeacherLogin from "./Components/teacherui/TeacherLogin";
-import TeacherHome from "./Components/teacherui/TeacherHome";
-import CreateExam from "./Components/teacherui/CreateExam";
-import TeacherNavbar from "./Components/teacherui/TeacherNavbar";
-import CreateClass from "./Components/teacherui/CreateClass";
-import Exams from "./Components/teacherui/Exams";
+import TeacherHome from "./Component/teacherui/TeacherHome";
+import Classes from "./Component/teacherui/Classes";
+import CreateClass from "./Component/teacherui/CreateClass";
+import CreateExam from "./Component/teacherui/CreateExam";
+import Exams from "./Component/teacherui/Exams";
+import EditExam from "./Component/teacherui/EditExam";
+import AddQuestion from "./Component/teacherui/AddQuestion"; 
+import EditClass from "./Component/teacherui/EditClass";
 
 function App() {
-  const location = useLocation();
-
-  const hideNavbar = location.pathname === "/";
-
   return (
     <>
-      {!hideNavbar && <TeacherNavbar />}
-
       <Routes>
-        <Route path="/" element={<TeacherLogin />} />
         <Route path="/TeacherHome" element={<TeacherHome />} />
+        <Route path="/Classes" element={<Classes />} />
+        <Route path="/CreateClass" element={<CreateClass />} />
+        <Route path="/edit-class/:id" element={<EditClass />} />
         <Route path="/CreateExam" element={<CreateExam />} />
-        <Route path="/CreateClass" element={<CreateClass/>} />
-        <Route path="/Exams" element={<Exams/>}/>
+        <Route path="/Exams" element={<Exams />} />
+        <Route path="/edit-exam/:id" element={<EditExam />} />
+        <Route path="/add-question/:examId" element={<AddQuestion />} />
+        <Route path="/edit-class/:id" element={<EditClass />} />
       </Routes>
-    </>
+      </>
+
   );
 }
 
