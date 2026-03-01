@@ -24,7 +24,7 @@ function HomePage() {
           </Link>
 
           {/* Teacher Login Navigation */}
-          <Link to="/TeacherLogin" className="btn outline-btn">
+          <Link to="/teacher" className="btn outline-btn">
             Teacher Login
           </Link>
 
