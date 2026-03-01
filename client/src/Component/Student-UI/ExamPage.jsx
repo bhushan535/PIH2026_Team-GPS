@@ -1,80 +1,138 @@
-import React, { useState } from "react";
-import { useParams } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { supabase } from "../../lib/supabase";
 import "./ExamPage.css";
 
 function ExamPage() {
-  const { id } = useParams();
+  const { id } = useParams();   // MUST match :id
+  const navigate = useNavigate();
 
+  const [questions, setQuestions] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedAnswers, setSelectedAnswers] = useState({});
 
-  const questions = [
-    {
-      _id: "q1",
-      question: "What is 2 + 2?",
-      options: ["2", "3", "4", "5"]
-    },
-    {
-      _id: "q2",
-      question: "Which language is used for React?",
-      options: ["Python", "Java", "JavaScript", "C++"]
-    }
-  ];
+  // ===============================
+  // Fetch Questions
+  // ===============================
+  useEffect(() => {
+    if (!id) return;
 
+    const fetchQuestions = async () => {
+      console.log("Fetching exam for ID:", id);
+
+      const { data, error } = await supabase
+        .from("questions")
+        .select("*")
+        .eq("exam_id", id);   // UUID match
+
+      if (error) {
+        console.log("Error:", error.message);
+        setQuestions([]);
+      } else {
+        console.log("Questions:", data);
+        setQuestions(data || []);
+      }
+
+      setLoading(false);
+    };
+
+    fetchQuestions();
+  }, [id]);
+
+  // ===============================
+  // Option Select
+  // ===============================
   const handleOptionChange = (questionId, option) => {
-    setSelectedAnswers({
-      ...selectedAnswers,
-      [questionId]: option
-    });
+    setSelectedAnswers((prev) => ({
+      ...prev,
+      [questionId]: option,
+    }));
+  };
+
+  const handleNext = () => {
+    if (currentIndex < questions.length - 1) {
+      setCurrentIndex(currentIndex + 1);
+    }
+  };
+
+  const handlePrevious = () => {
+    if (currentIndex > 0) {
+      setCurrentIndex(currentIndex - 1);
+    }
   };
 
   const handleSubmit = () => {
-    console.log("Submitted Answers:", selectedAnswers);
-    alert("Exam Submitted (UI Demo)");
+    alert("Exam Submitted!");
+    navigate("/");  // redirect after submit
   };
 
   return (
     <div className="exam-container">
+      <h2>Exam</h2>
 
-      {/* Header */}
-      <div className="exam-header">
-        <h2>Exam ID: {id}</h2>
-        <div className="timer">⏳ 60:00</div>
-      </div>
+      {loading && <p>Loading questions...</p>}
 
-      {/* Questions */}
-      <div className="question-section">
-        {questions.map((q, index) => (
-          <div key={q._id} className="question-card">
-            <h3>
-              Q{index + 1}. {q.question}
-            </h3>
+      {!loading && questions.length === 0 && (
+        <p>No questions found for this exam.</p>
+      )}
 
-            <div className="options">
-              {q.options.map((option, i) => (
-                <label key={i} className="option-item">
-                  <input
-                    type="radio"
-                    name={q._id}
-                    value={option}
-                    onChange={() =>
-                      handleOptionChange(q._id, option)
-                    }
-                  />
-                  {option}
-                </label>
-              ))}
+      {!loading && questions.length > 0 && (
+        <div>
+          <h3>
+            Q{currentIndex + 1}.{" "}
+            {questions[currentIndex].question_text}
+          </h3>
+
+          {["A", "B", "C", "D"].map((opt) => (
+            <div key={opt}>
+              <label>
+                <input
+                  type="radio"
+                  name={questions[currentIndex].id}
+                  value={opt}
+                  checked={
+                    selectedAnswers[
+                      questions[currentIndex].id
+                    ] === opt
+                  }
+                  onChange={() =>
+                    handleOptionChange(
+                      questions[currentIndex].id,
+                      opt
+                    )
+                  }
+                />
+                {
+                  questions[currentIndex][
+                    `option_${opt.toLowerCase()}`
+                  ]
+                }
+              </label>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
 
-      {/* Submit */}
-      <div className="submit-section">
-        <button className="submit-btn" onClick={handleSubmit}>
-          Submit Exam
-        </button>
-      </div>
+          <br />
 
+          <button
+            onClick={handlePrevious}
+            disabled={currentIndex === 0}
+          >
+            Previous
+          </button>
+
+          <button
+            onClick={handleNext}
+            disabled={currentIndex === questions.length - 1}
+          >
+            Next
+          </button>
+
+          <button onClick={handleSubmit}>
+            Submit Exam
+          </button>
+        </div>
+      )}
     </div>
   );
 }

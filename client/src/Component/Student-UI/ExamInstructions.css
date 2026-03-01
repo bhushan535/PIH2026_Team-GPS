@@ -1,0 +1,131 @@
+/* ===============================
+   GLOBAL FULL SCREEN
+=============================== */
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+/* ===============================
+   FULL SCREEN BACKGROUND
+=============================== */
+.instruction-page {
+  width: 100vw;               /* 🔥 Full width */
+  min-height: 100vh;          /* 🔥 Full height */
+  background: linear-gradient(135deg, #141e30, #243b55);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: "Poppins", sans-serif;
+  padding: 60px;
+  box-sizing: border-box;
+}
+
+/* ===============================
+   FULL WIDTH GLASS CARD
+=============================== */
+.instruction-card {
+  width: 100%;                /* 🔥 Full width */
+  max-width: 1000px;          /* Professional wide look */
+  background: rgba(255, 255, 255, 0.10);
+  backdrop-filter: blur(15px);
+  padding: 50px;
+  border-radius: 20px;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.35);
+  color: white;
+}
+
+/* ===============================
+   TITLE
+=============================== */
+.instruction-card h2 {
+  text-align: center;
+  margin-bottom: 35px;
+  font-size: 32px;
+  font-weight: 600;
+}
+
+/* ===============================
+   INSTRUCTION LIST
+=============================== */
+.instruction-list {
+  list-style-type: disc;
+  padding-left: 25px;
+  margin-bottom: 40px;
+}
+
+.instruction-list li {
+  margin-bottom: 15px;
+  line-height: 1.7;
+  font-size: 16px;
+  opacity: 0.9;
+}
+
+/* ===============================
+   CHECKBOX SECTION
+=============================== */
+.agree-box {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 30px;
+  font-size: 15px;
+}
+
+.agree-box input {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+}
+
+/* ===============================
+   START BUTTON
+=============================== */
+
+/* Default */
+.start-btn {
+  width: 100%;
+  height: 52px;
+  font-size: 16px;
+  border-radius: 12px;
+  border: none;
+  font-weight: 600;
+  background: #6b7280;
+  color: white;
+  cursor: not-allowed;
+  transition: all 0.3s ease;
+}
+
+/* Active */
+.start-btn:not(:disabled) {
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  cursor: pointer;
+}
+
+.start-btn:not(:disabled):hover {
+  background: linear-gradient(135deg, #16a34a, #15803d);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(34, 197, 94, 0.4);
+}
+
+.start-btn:not(:disabled):active {
+  transform: scale(0.97);
+}
+
+/* ===============================
+   RESPONSIVE
+=============================== */
+@media (max-width: 768px) {
+  .instruction-page {
+    padding: 30px;
+  }
+
+  .instruction-card {
+    padding: 30px;
+  }
+
+  .instruction-card h2 {
+    font-size: 24px;
+  }
+}

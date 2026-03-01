@@ -8,6 +8,9 @@ import TeacherOptions from "./Component/Teacher-ui/TeacherOption.jsx";
 import TeacherRegister from "./Component/Teacher-ui/TeacherRegister.jsx";
 import TeacherLogin from "./Component/Teacher-ui/TeacherLogin.jsx";
 import TeacherHome from "./Component/Teacher-ui/TeacherHome.jsx";
+import ExamPage from "./Component/Student-UI/ExamPage.jsx";
+import ExamInstructions from "./Component/Student-UI/ExamInstructions.jsx";
+import ExamStartCountdown from "./Component/Student-UI/ExamStartCountdown.jsx";
 
 function App() {
   return (
@@ -19,7 +22,9 @@ function App() {
       {/* Student */}
       <Route path="/StudentLogin" element={<StudentLogin />} />
       <Route path="/student-dashboard" element={<StudentDashboard />} />
-
+      <Route path="/exam/:id/instructions" element={<ExamInstructions />} />
+      <Route path="/exam/:examId/start" element={<ExamStartCountdown />} />
+      <Route path="/attempt-exam/:id" element={<ExamPage />} />
       {/* Teacher */}
      <Route path="/teacher" element={<TeacherOptions />} />
 
